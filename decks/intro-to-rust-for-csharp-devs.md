@@ -1,3 +1,11 @@
+---
+theme: gaia
+paginate: true
+marp: true
+class:
+    - lead
+---
+
 ## A quick intro to Rust 🦀 for C# devs
 [Dotnet Oxford Lightning talks 17 June 2025](https://www.meetup.com/dotnetoxford/events/307454172/)
 Tim Abell [0x5.uk](https://0x5.uk/)
@@ -7,11 +15,18 @@ fn main() {
     println!("Hello dotnet oxford!");
 }
 ```
-- ### The hunt for the perfect language
-  C# 💼 💷
-  ~~Ruby on Rails~~  ([GDS](https://www.gov.uk/government/organisations/government-digital-service))
-  ~~GoLang~~ ([Schema Explorer](https://timabell.github.io/schema-explorer/))
-  Rust! ([gitopolis](https://github.com/rustworkshop/gitopolis))
+
+---
+
+### The hunt for the perfect language
+
+C# 💼 💷
+~~Ruby on Rails~~  ([GDS](https://www.gov.uk/government/organisations/government-digital-service))
+~~GoLang~~ ([Schema Explorer](https://timabell.github.io/schema-explorer/))
+Rust! ([gitopolis](https://github.com/rustworkshop/gitopolis))
+
+---
+
 - ##  🥷 Rust vs. C# 🥊
 	- ### Performance
 	  No Runtime
