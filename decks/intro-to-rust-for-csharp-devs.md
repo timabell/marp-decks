@@ -34,14 +34,20 @@ Rust! ([gitopolis](https://github.com/rustworkshop/gitopolis))
 
 ---
 
-## 🥷 Rust vs. C# 🥊
+### 🥷 Rust vs. C# 🥊
+
+---
 
 ### Performance
 No Runtime
-No GC ()
 
-![image.png](../assets/image_1750099370866_0.png){:height="700px" width="400px"}
-https://discord.com/blog/why-discord-is-switching-from-go-to-rust
+---
+
+![height:450px](img/rust/discord-gc-spikes.png)
+
+[discord.com/blog/why-discord-is-switching-from-go-to-rust](https://discord.com/blog/why-discord-is-switching-from-go-to-rust)
+
+--- 
 
 ownership & borrowing vs garbage collection
 
