@@ -4,6 +4,7 @@ paginate: true
 marp: true
 class:
     - lead
+    - invert
 ---
 
 Title
