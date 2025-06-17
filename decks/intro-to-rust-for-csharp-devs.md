@@ -24,7 +24,7 @@ fn main() {
 [Dotnet Oxford Lightning talks 17 June 2025](https://www.meetup.com/dotnetoxford/events/307454172/)
 
 <!--
-speaker notes here
+who am i
 -->
 
 ---
@@ -39,56 +39,13 @@ C# 💼 💷
 ~~GoLang~~ ([Schema Explorer](https://timabell.github.io/schema-explorer/))
 Rust! ([gitopolis](https://github.com/rustworkshop/gitopolis))
 
+<!--
+my journey to rust
+-->
 
 ---
 
-### Similarities to C#
-
-- Strong typed
-- Compiled
-- Type inference - `var`
-- Memory safe
-- `unsafe` escape hatch
-- Cargo Crate == NuGet Package
-- `async`
-- Multi-paradigm, broad applicability
-
----
-
-### Differences from C#
-
-- No exceptions - `panic!` or `Result<>`
-- No nulls - `Option<>`
-- No IL, No GC, No Runtime
-- Faster and less overhead
-
----
-
-### Syntax Differences from C#
-
-- linq-like chaining of list processing
-- Return last expression
-- macros - e.g. `println!("hello again")`
-
----
-
-![height:450px](img/rust/discord-gc-spikes.png)
-
-[discord.com/blog/why-discord-is-switching-from-go-to-rust](https://discord.com/blog/why-discord-is-switching-from-go-to-rust)
-
---- 
-
-### Memory management
-
-ownership & borrowing vs garbage collection
-
-- Rust: [RAII - Resource Acquisition is Initialization](https://doc.rust-lang.org/rust-by-example/scope/raii.html)
-	- construction - memory-allocated (`malloc`)
-	- destruction (goes out of scope) - release/`free`/de-allocate
-
----
-
-### Popular
+### Popularity
 
 ![height:400px](img/rust/stackoverflow-survey-2024.png)
 
@@ -97,15 +54,157 @@ ownership & borrowing vs garbage collection
 <!--
 > "Rust continues to be the most-admired programming language with an 83% score this year."
 > ~ Stackoverflow developer survey 2024
+
+I chose for cheap web-scale
 -->
 
 ---
 
-## Rust vs C/C++
+### Similarities to C#
 
-- Memory safe by default
-- Easier to learn
-- Can be embedded in C programs
+---
+
+- Compiled
+- Strong typed
+- Memory safe
+- Multi-paradigm, broad applicability
+- Cargo Crate == NuGet Package
+- `unsafe` escape hatch
+- Not quite Haskell-level functional (no higher-kinded types)
+
+---
+
+Type inference
+
+`var` == `let`
+
+```rust
+let url = &repo.remotes["origin"].url; // url is a &String
+```
+
+---
+
+LINQ-like chaining of list processing
+
+```rust
+repos
+  .into_vec()
+  .into_iter()
+  .filter(|r| r.tags.contains(&tag.to_string()))
+  .collect()
+```
+
+---
+
+async
+
+```rust
+pub(crate) async fn trace_requests(req: Request<Body>, next: Next)
+	-> Result<Response, StatusCode>
+{
+	...
+	let response = next.run(req).await;
+	...
+}
+```
+
+Needs runtime, e.g. Tokio
+
+---
+
+### Differences from C#
+
+---
+
+![height:450px](img/rust/discord-gc-spikes.png)
+
+[discord.com/blog/why-discord-is-switching-from-go-to-rust](https://discord.com/blog/why-discord-is-switching-from-go-to-rust)
+
+---
+
+- No IL, No GC, No Runtime
+- Faster and less overhead
+- No nulls - `Option<>`
+- No exceptions - `panic!` or `Result<>`
+- Immutable by default `mut`
+- Borrowing & lifetimes (later slides)
+- Return of last expression
+
+---
+
+Slightly different function signature
+
+```rust
+pub fn add(&mut self, repo_folder: String) -> Result<(), GitopolisError> {
+```
+---
+
+Richer `enum` type
+
+```rust
+enum Commands {
+	Add {
+		repo_folders: Vec<String>,
+	},
+	List {
+		tag: Option<String>,
+		long: bool,
+	},
+}
+```
+
+---
+
+Macros are everywhere
+
+```rust
+#[derive(Subcommand)]
+enum Commands {
+...
+```
+
+```rust
+println!("🏢 {}> Repo folder missing, skipped.", &repo.path);
+```
+
+--- 
+
+Matching, Option and Result
+
+```rust
+match &Args::parse_from(wild::args()).command {
+	Some(Commands::Add { repo_folders }) => add(repo_folders.to_owned()),
+	Some(Commands::Remove { repo_folders }) => {
+		init_gitopolis().remove(repo_folders).expect("oops");
+	}
+	Some(Commands::List { tag: tag_name, long,
+	}) => list(
+		init_gitopolis().list(tag_name).expect("oops"), *long,
+	),
+	None => {
+		panic!("oh bugger")
+	}
+}
+```
+<!--
+- like OneOf or LanguageExt, but baked-in
+-->
+
+--- 
+
+### Memory management
+
+Ownership, borrowing & lifetimes vs. garbage collection
+
+Rust: [RAII - Resource Acquisition is Initialization](https://doc.rust-lang.org/rust-by-example/scope/raii.html)
+
+- construction - memory-allocated (`malloc`)
+- destruction (goes out of scope) - release/`free`/de-allocate
+- single owner of every resource - borrow with `&something`
+
+```rust
+fn print_refs<'a, 'b>(x: &'a i32, y: &'b i32) {
+```
 
 ---
 
@@ -113,43 +212,11 @@ ownership & borrowing vs garbage collection
 
 - cargo
 - rustup / asdf-vm
-- crates - vast, choose-your-own-adventure, mature, the usual maintenance/ownership challenges
+- [crates.io](https://crates.io/) - like nuget.org
 - clippy - linter `cargo clippy --fix`
 - `cargo format`
 - VSCode, RustRover, Windsurf, NeoVim
 - Language-server
-
----
-
-## Language features
-
-- `Some(foo)` / `None(foo)` / `Result(foo)`  -> `Err` (think this *or* that) sometimes called "union"
-- like OneOf or LanguageExt, but baked-in
-- `match`
-- Not quite Haskell-level functional (no higher-kinded types)
-- `macros!` (used everywhere)
-- waaaaaaaaay more
-
----
-
-## Culture & community
-
-- Friendly, welcoming, teaching
-- [Great intro docs](https://www.rust-lang.org/learn)
-- [many books](https://rustworkshop.co/2023/06/18/rust-programming-books/)
-- [Active community](https://rustworkshop.co/2023/04/27/how-to-be-part-of-the-rust-community/) - meetups, worldwide conferences
-
----
-
-## Applications
-
-- Web / microservice
-- Backend (axum etc)
-- Frontend (leptos etc)
-- WASM / WASI - serverless - fast startup
-- Mobile apps
-- Embedded systems
-- ...
 
 ---
 
@@ -195,9 +262,49 @@ fn tags() {
 
 ---
 
+## Rust vs C/C++
+
+- Memory safe by default (security!!)
+- Easier to learn
+- Can be embedded in C programs
+- US Gov mandate
+- Enterprise conversions happening now (Microsoft, Google Android, etc)
+
+---
+
+## Applications
+
+- Web / microservice
+- Backend (axum etc)
+- Frontend (leptos etc)
+- WASM / WASI - serverless - fast startup
+- Mobile apps
+- Embedded systems
+- Crypto
+
+---
+
+## Culture & community
+
+- Friendly, welcoming, teaching
+- [Great intro docs](https://www.rust-lang.org/learn)
+- [Many books](https://rustworkshop.co/2023/06/18/rust-programming-books/)
+- [Active community](https://rustworkshop.co/2023/04/27/how-to-be-part-of-the-rust-community/) - meetups,
+- Worldwide conferences
+  - [Rust Nation](https://www.rustnationuk.com/) London, March/April
+  - [RustForge](https://rustforgeconf.com/) New Zealand, August
+
+---
+
 ## A look at some code
 
+If there's time...
+
 https://github.com/rustworkshop/gitopolis
+
+<!--
+Next slide!
+-->
 
 ---
 
@@ -212,3 +319,7 @@ fn main() {
     println!("Thanks!");
 }
 ```
+
+<!--
+Q&A
+-->
