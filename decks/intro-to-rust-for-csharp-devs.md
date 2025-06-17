@@ -16,7 +16,15 @@ fn main() {
 }
 ```
 
+<!--
+speaker notes here
+-->
+
 ---
+<!--
+footer: Tim Abell | 0x5.uk
+-->
+
 
 ### The hunt for the perfect language
 
